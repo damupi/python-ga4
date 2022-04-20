@@ -1,0 +1,45 @@
+#!/usr/bin/env python
+import os, sys
+
+from google.analytics.admin import AnalyticsAdminServiceClient
+from google.analytics.admin import ListCustomDimensionsRequest
+
+
+def list_custom_dimensions(property_id):
+    """Lists CustomDimensions on a property.
+Args:
+            request (Union[google.analytics.admin_v1alpha.types.ListCustomDimensionsRequest, dict]):
+                The request object. Request message for
+                ListCustomDimensions RPC.
+            parent (str):
+                Required. Example format:
+                properties/1234
+
+        Returns:
+                ListCustomDimensions RPC.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+    """  
+
+    # Get the authentication service object
+    client = AnalyticsAdminServiceClient()
+
+    request = ListCustomDimensionsRequest(
+        parent=f"properties/{property_id}",
+    )
+
+    # Make the request
+    page_result = client.list_custom_dimensions(request=request)
+
+    # Handle the response
+    for response in page_result:
+        print(response)
+
+    return
+
+if __name__ == "__main__":
+    # Load the Google Credentials
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "google_credentials.json"
+    property_id = "write_your_ga4_property_id_here"
+    custom_dimensions = list_custom_dimensions(property_id)
